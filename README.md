@@ -70,6 +70,12 @@ Selain itu, kita juga bisa menggunakan nilai *R-squared* atau *adj. R-squared* j
 [Feature Information Source](https://www.kaggle.com/code/juancarlosventosa/models-to-improve-customer-retention/notebook) 
 <br>
 
+Setelah melakukan proses *cross validation*, *randomized search*, dan *hyperparameter tuning*, model terbaik untuk memprediksi nilai *CLV* klien pada *dataset* ini adalah __*Random Forest Regressor*__.
+
+__*Random Forest Regressor*__ adalah sebuah model atau algoritma *machine learning* untuk memprediksi suatu nilai numerikal. Model ini bekerja dengan membuat beberapa pohon keputusan (atau model *decision tree*) dan menggabungkan hasil dari setiap pohon untuk membuat prediksi akhir. Setiap pohon dibuat secara acak dari dataset. Setiap pohon membuat prediksi sendiri dan hasil dari semua pohon digabungkan menjadi prediksi akhir. Gabungan ini biasanya dilakukan dengan mengambil rata-rata dari hasil prediksi dari setiap pohon.
+
+__*Random Forest Regressor*__ memiliki beberapa keuntungan, seperti tingkat stabilitas model yang tinggi dan kemampuan untuk menangani kasus dimana ada fitur yang memiliki pengaruh besar pada target dan juga meminimalisir *overfitting*. Namun, metode ini membutuhkan waktu proses yang lebih lama dibandingkan dengan metode lainnya dan juga membutuhkan lebih banyak memori karena banyaknya pohon yang dibangun. Disini saya mengatasi masalah ini dengan membatasi jumlah pohon yang dibuat didalam parameter n_estimators.
+
 ### **7. Conclusion**
 Dari hasil *cross validation*, *hyperparameter tuning*, dan *randomized search*, model terbaik adalah __random forest__ dengan ketentuan parameter berikut:
 
@@ -89,22 +95,24 @@ Berdasarkan pemodelan yang sudah dilakukan, fitur '*Number of Policies*' dan '*M
  Tetapi, tidak menutup kemungkinan juga prediksinya meleset lebih jauh karena *bias* yang dihasilkan model masih cukup tinggi bila dilihat dari visualisasi antara *CLV* aktual dan prediksi. *Bias* yang dihasilkan oleh model ini dikarenakan oleh terbatasnya fitur pada *dataset* yang bisa merepresentasikan aspek informasi klien, seperti kelas kendaraan, jenis asuransi, status pekerjaan, status pernikahan, tingkat edukasi, dan lain-lain.
 
  Model ini tentu masih dapat ditingkatkan performanya agar dapat menghasilkan prediksi yang lebih baik lagi. Namun, kita dapat melakukan A/B testing terhadap model yang sudah dibuat pada project ini untuk mengetahui tingkat efektifitas penggunaan model terhadap perkiraan nilai *CLV*. Nantinya, dari hasil A/B testing, kita bisa mendapatkan *insight* lainnya terkait perihal yang bisa dan harus diperbaiki pada model.  
- ---
+ 
+---
 Mengapa model kita memprediksi dengan kurang akurat? Karena model ini memiliki beberapa limitasi, diantaranya:
-1. Jumlah fitur yang sedikit. Karena *dataset* yang didapatkan hanya berisi 10 fitur (10 kolom), maka tentu saja hasil prediksi hanya akan belajar dari fitur-fitur yang sedikit itu, sehingga model menjadi "kurang pintar".
-2. Jumlah data yang sangat sedikit. Kita hanya memiliki 5669 data diawal, sehingga model hanya dapat belajar dari rentang data-data tersebut. Apabila model disuruh prediksi data lain yang berada diluar dari rentang *dataset* yang kita miliki, maka hasil prediksi menjadi kurang akurat dan kurang bisa dipercaya.
+1. Jumlah fitur yang sedikit. Karena *dataset* yang didapatkan hanya berisi 10 fitur (10 kolom), maka tentu saja hasil prediksi hanya akan belajar dari fitur-fitur yang sedikit itu, sehingga model menjadi "kurang pintar". Ternyata, walaupun kita sudah menggunakan *polynomial feature*, namun hal itu tidak dapat meningkatkan performa model.
+2. Jumlah data (dapat dihitung dari jumlah baris pada dataset) yang sangat sedikit. Kita hanya memiliki 5669 data diawal, sehingga model hanya dapat belajar dari rentang data-data tersebut. Apabila model disuruh prediksi data lain yang berada diluar dari rentang *dataset* yang kita miliki, maka hasil prediksi menjadi kurang akurat dan kurang bisa dipercaya.
 3. Masih ada *outliers*. Di satu sisi, apabila kita menghilangkan seluruh *outliers*, maka kita akan kehilangan lebih banyak data dari data yang jumlahnya sudah sangat sedikit. Di sisi lainnya, *outliers* dapat mengurangi performa model. Jadi, setiap keputusan yang diambil memang ada kelebihan dan kekurangannya.
 
 ### **8. Recommendation**
+
 ### Untuk bisnis.
+
 Dikarenakan nilai *error* yang cukup besar dari nilai *CLV* aktual dengan *CLV* prediksi, maka hasil prediksi model ini sebaiknya tidak secara mentah-mentah dipercaya oleh perusahaan A untuk memprediksi *CLV* kliennya. Hal ini disebabkan oleh limitasi yang telah dijelaskan diatas. Namun, hasil prediksi untuk nilai *CLV* yang rendah masih cukup akurat. Perusahaan A masih dapat memercayai hasil prediksi model apabila nilai *CLV* masih sekitar dibawah 8000 (berdasarkan visual dari *scatterplot*).
 
 ### Untuk performa model.
+
 Perusahaan A dapat memperbaiki performa model melalui beberapa cara, diantaranya:
 
-
 - Menambah jumlah fitur klien. Hal ini dapat mengurangi risiko model *underfitting*. Namun, tentu saja fitur yang ditambahkan tidak boleh sembarangan. Apabila perusahaan A menambah terlalu banyak fitur, maka model dapat cenderung *overfitting*. Tambahkan fitur-fitur yang berkaitan/berkorelasi kuat dengan *CLV* seseorang, misalkan tingkat retensi klien (semakin lama klien menggunakan produk/jasa perusahaan A, maka semakin tinggi pula nilai *CLV* klien itu), frekuensi pembelian klien (semakin sering klien melakukan pembelian, semakin tinggi nilai *CLV* klien itu), dan demografi klien (segmen klien yang berbeda mungkin memiliki perilaku pembelian (*purchasing behavior*) yang berbeda. Hal ini dapat mempengaruhi *CLV* mereka).
-
 
 - Menambah jumlah data klien. Hal ini dapat membuat model menjadi semakin "pintar" karena model akan belajar dari data yang lebih heterogen/lebih beragam. Hal ini juga dapat mengurangi kemungkinan *overfitting*.
 
