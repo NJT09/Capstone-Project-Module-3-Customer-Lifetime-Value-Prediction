@@ -79,22 +79,35 @@ __*Random Forest Regressor*__ memiliki beberapa keuntungan, seperti tingkat stab
 ### **7. Conclusion**
 Dari hasil *cross validation*, *hyperparameter tuning*, dan *randomized search*, model terbaik adalah __random forest__ dengan ketentuan parameter berikut:
 
-- n_estimators = 187
-- min_samples_split = 4
-- min_samples_leaf = 3
+- Polynomial Degree = 1
+- n_estimators = 356
+- min_samples_split = 6
+- min_samples_leaf = 7
 - max_features = auto
-- max_depth = 10
+- max_depth = 38
 
-Dengan nilai rata-rata MAPE sebesar 11.69%
+Dengan nilai rata-rata MAPE sebesar 12.96%
 
 ---
-Berdasarkan pemodelan yang sudah dilakukan, fitur '*Number of Policies*' dan '*Monthly Premium Auto*' menjadi fitur yang paling berpengaruh terhadap '*Customer Lifetime Value*'.
+Berdasarkan pemodelan yang sudah dilakukan, fitur '*Number of Policies*' menjadi fitur yang paling berpengaruh terhadap '*Customer Lifetime Value*'.
 
- Metrik evaluasi yang digunakan pada model adalah nilai MAPE. Jika ditinjau dari nilai MAPE yang dihasilkan oleh model setelah dilakukan *hyperparameter tuning*, yaitu sebesar 12.77%, kita dapat menyimpulkan bahwa bila nanti model yang kita buat ini digunakan untuk memperkirakan *CLV* klien baru di perusahaan A pada rentang nilai seperti yang dilatih terhadap model (minimal = 1898.01, maksimal = 58753.88), maka perkiraan *CLV*nya rata-rata akan meleset kurang lebih sebesar 12.77% dari nilai *CLV* seharusnya. 
+ Metrik evaluasi yang digunakan pada model adalah nilai MAPE. Jika ditinjau dari nilai MAPE yang dihasilkan oleh model setelah dilakukan *hyperparameter tuning*, yaitu sebesar 12.90%, kita dapat menyimpulkan bahwa bila nanti model yang kita buat ini digunakan untuk memperkirakan *CLV* klien baru di perusahaan A pada rentang nilai seperti yang dilatih terhadap model (didapat dari function df.describe(include='all') ):
+ - *Number of Policies* dari 1 sampai 9
+ - *Monthly Premium Auto* dari 61 sampai 249
+ - *Total Claim Amount* dari 0.42 sampai 1961.16
+ - *Income* dari 10037 sampai 99934
+ - *Vehicle Class* dari kelompok Four-Door Car, Two-Door Car, SUV, Sports Car, Luxury Car, dan Luxury SUV
+ - *Coverage* tipe Basic, Extended, dan Premium
+ - *Renew Offer Type* jenis Offer1, Offer2, Offer3, dan Offer4
+ - *Employment Status* dari kelompok Employed, Unemployed, Medical Leave, Disabled, dan Retired
+ - *Marital Status* dengan jenis Married, Single, dan Divorced
+ - *Education* tingkat edukasi High Schoold or Below, College, Bachelor, Master, dan Doctor
+ 
+ maka perkiraan *CLV*nya rata-rata akan meleset kurang lebih sebesar 12.90% dari nilai *CLV* seharusnya. 
  
  Tetapi, tidak menutup kemungkinan juga prediksinya meleset lebih jauh karena *bias* yang dihasilkan model masih cukup tinggi bila dilihat dari visualisasi antara *CLV* aktual dan prediksi. *Bias* yang dihasilkan oleh model ini dikarenakan oleh terbatasnya fitur pada *dataset* yang bisa merepresentasikan aspek informasi klien, seperti kelas kendaraan, jenis asuransi, status pekerjaan, status pernikahan, tingkat edukasi, dan lain-lain.
 
- Model ini tentu masih dapat ditingkatkan performanya agar dapat menghasilkan prediksi yang lebih baik lagi. Namun, kita dapat melakukan A/B testing terhadap model yang sudah dibuat pada project ini untuk mengetahui tingkat efektifitas penggunaan model terhadap perkiraan nilai *CLV*. Nantinya, dari hasil A/B testing, kita bisa mendapatkan *insight* lainnya terkait perihal yang bisa dan harus diperbaiki pada model.  
+ Model ini tentu masih dapat ditingkatkan performanya agar dapat menghasilkan prediksi yang lebih baik lagi. Namun, kita harus mengatasi limitasi model yang akan dijabarkan dibawah ini.
  
 ---
 Mengapa model kita memprediksi dengan kurang akurat? Karena model ini memiliki beberapa limitasi, diantaranya:
